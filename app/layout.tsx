@@ -3,14 +3,14 @@ import type { Metadata } from "next"
 import { Josefin_Sans, Montserrat, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import AuthSessionProvider from "@/components/session-provider"
-import dynamic from "next/dynamic"
+import dynamicImport from "next/dynamic"
 
 // Force dynamic rendering for the entire app
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 // Dynamically import AppTour to prevent static generation issues
-const AppTour = dynamic(() => import("@/components/app-tour"), {
+const AppTour = dynamicImport(() => import("@/components/app-tour"), {
   ssr: false,
   loading: () => null,
 })
