@@ -78,27 +78,6 @@ npx prisma db push
 npx prisma studio
 ```
 
-## Make public and create a Railway template
-After first successful deploy on Railway:
-1. Project → Settings → Visibility → set to Public
-2. Project → Templates → Create from project
-3. Fill in template metadata (name, description, tags)
-4. Add variables to the template (match the Environment variables section)
-5. Copy template URL and replace placeholders in this README
-
-## Railway hackathon compliance
-- Multiple services: Web (Next.js) + PostgreSQL + AI (OpenRouter) + Email (Resend)
-- Modern stack: Next.js 14, TypeScript, Prisma
-- Public template: One‑click deploy ready
-- Written content: Publish a blog/tutorial and link it in your submission
-
-## Submission checklist
-- Project created after the hackathon start date
-- Project set to Public on Railway
-- Template created and shared
-- README includes Deploy button, env vars, and setup
-- Live demo link added
-- Written content published and linked
 
 ## License
 MIT
