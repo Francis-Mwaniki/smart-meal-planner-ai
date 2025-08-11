@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-import { type NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendWelcomeEmail } from "@/lib/resend"
 import bcrypt from "bcryptjs"
