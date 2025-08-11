@@ -12,19 +12,14 @@ const nextConfig = {
   // Enable standalone output for Docker deployment
   output: 'standalone',
   
-  // Force dynamic rendering for all routes to prevent build-time API calls
+  // Move to correct property for Next.js 15
+  serverExternalPackages: ['@prisma/client'],
+  
+  // Force all routes to be dynamic to prevent build-time API calls
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
+    // Disable static generation
+    staticPageGenerationTimeout: 0,
   },
-  
-  // Disable static generation completely
-  trailingSlash: false,
-  generateBuildId: async () => {
-    return 'build-' + Date.now()
-  },
-  
-  // Force all pages to be dynamic
-  staticPageGenerationTimeout: 0,
 }
 
 export default nextConfig
