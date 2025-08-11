@@ -3,17 +3,10 @@ import type { Metadata } from "next"
 import { Josefin_Sans, Montserrat, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import AuthSessionProvider from "@/components/session-provider"
-import dynamicImport from "next/dynamic"
 
 // Force dynamic rendering for the entire app
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-
-// Dynamically import AppTour to prevent static generation issues
-const AppTour = dynamicImport(() => import("@/components/app-tour"), {
-  ssr: false,
-  loading: () => null,
-})
 
 const josefin = Josefin_Sans({ 
   subsets: ["latin"],
@@ -51,7 +44,6 @@ export default function RootLayout({
       <body className={`${josefin.variable} ${montserrat.variable} ${playfair.variable} font-montserrat`}>
         <AuthSessionProvider>
           {children}
-          <AppTour />
         </AuthSessionProvider>
       </body>
     </html>
