@@ -16,7 +16,7 @@ type TourStep = {
 
 const STORAGE_KEY = "smartmeal.tour.v1.completed"
 
-// Force client-side only rendering
+// Force client-side only rendering with better isolation
 const AppTourClient = () => {
   const { data: session } = useSession()
   const pathname = usePathname()
@@ -25,14 +25,20 @@ const AppTourClient = () => {
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null)
   const [container, setContainer] = useState<HTMLElement | null>(null)
   const [mounted, setMounted] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
-  // Ensure component only runs on client
+  // Ensure component only runs on client with error boundary
   useEffect(() => {
-    setMounted(true)
+    try {
+      setMounted(true)
+    } catch (err) {
+      setError(err as Error)
+      return
+    }
   }, [])
 
-  // Don't render anything until mounted
-  if (!mounted) {
+  // Don't render anything until mounted or if there's an error
+  if (!mounted || error) {
     return null
   }
 
