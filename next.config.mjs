@@ -11,6 +11,11 @@ const nextConfig = {
   },
   // Enable standalone output for Docker deployment
   output: 'standalone',
+  
+  // Force dynamic rendering for all routes to prevent build-time API calls
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client'],
+  },
 }
 
 export default nextConfig
