@@ -9,8 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Remove standalone output to fix Html component error
-  // output: 'standalone',
+  // Enable standalone output for Docker deployment
+  output: 'standalone',
 }
 
 export default nextConfig
