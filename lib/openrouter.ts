@@ -625,17 +625,22 @@ export class OpenRouterClient {
 }
 
 export const openRouter = (() => {
-  const apiKey = process.env.OPENROUTER_API_KEY
-  
-  if (!apiKey || apiKey.trim() === "") {
-    console.warn("OpenRouter API key not found. Set OPENROUTER_API_KEY environment variable to enable AI features.")
-    return null
-  }
-  
-  try {
-    return new OpenRouterClient(apiKey)
-  } catch (error) {
-    console.error("Failed to initialize OpenRouter client:", error)
-    return null
+  // Lazy-load OpenRouter client to prevent instantiation during build
+  return {
+    getClient: () => {
+      const apiKey = process.env.OPENROUTER_API_KEY
+      
+      if (!apiKey || apiKey.trim() === "") {
+        console.warn("OpenRouter API key not found. Set OPENROUTER_API_KEY environment variable to enable AI features.")
+        return null
+      }
+      
+      try {
+        return new OpenRouterClient(apiKey)
+      } catch (error) {
+        console.error("Failed to initialize OpenRouter client:", error)
+        return null
+      }
+    }
   }
 })()

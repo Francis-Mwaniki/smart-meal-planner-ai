@@ -14,12 +14,6 @@ const nextConfig = {
   
   // Move to correct property for Next.js 15
   serverExternalPackages: ['@prisma/client'],
-  
-  // Force all routes to be dynamic to prevent build-time API calls
-  experimental: {
-    // Disable static generation
-    staticPageGenerationTimeout: 0,
-  },
 }
 
 export default nextConfig

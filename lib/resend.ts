@@ -1,9 +1,16 @@
 import { Resend } from "resend"
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-load Resend client to prevent instantiation during build
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY environment variable is not set")
+  }
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 export async function sendWelcomeEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: "SmartMeal AI <noreply@smartmeal.ai>",
       to: [email],
@@ -60,6 +67,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
 
 export async function sendMealPlanEmail(email: string, name: string, mealPlan: any) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: "SmartMeal AI <noreply@smartmeal.ai>",
       to: [email],
@@ -109,6 +117,7 @@ export async function sendMealPlanEmail(email: string, name: string, mealPlan: a
 
 export async function sendShoppingListEmail(email: string, name: string, shoppingList: any) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: "SmartMeal AI <noreply@smartmeal.ai>",
       to: [email],

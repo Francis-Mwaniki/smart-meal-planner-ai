@@ -161,9 +161,10 @@ export async function PUT(
           return NextResponse.json({ error: "Forbidden" }, { status: 403 })
         }
         
-        if (openRouter) {
+        const openRouterClient = openRouter.getClient()
+        if (openRouterClient) {
           // Call AI optimization
-          const optimizedData = await openRouter.generateShoppingListOptimization({
+          const optimizedData = await openRouterClient.generateShoppingListOptimization({
             mealPlanId: shoppingList.mealPlanId,
             items: shoppingList.items as { name: string; amount: string; category: string; estimatedCost: number; purchased: boolean; }[] || []
           })
