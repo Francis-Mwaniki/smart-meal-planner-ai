@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  preferences UserPreferences?
+  mealPlans   MealPlan[]
+  favorites   UserFavorite[]
+  
+  @@map("users")
+}
+
+model UserPreferences {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  dietType        String?  // vegetarian, vegan, keto, paleo, mediterranean, balanced
+  allergies       String[] // array of allergies
+  budgetWeekly    Float?
+  peopleCount     Int      @default(1)
+  maxCookingTime  Int      @default(30) // in minutes
+  cuisineTypes    String[] // italian, asian, mexican, etc.
+  healthGoals     String[] // weight_loss, muscle_gain, maintenance
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_preferences")
+}
+
+model Recipe {
+  id                String   @id @default(cuid())
+  name              String
+  description       String?
+  ingredients       Json     // {ingredient: amount, ...}
+  instructions      String[]
+  prepTime          Int      // in minutes
+  cookTime          Int      // in minutes
+  servings          Int
+  caloriesPerServing Int?
+  dietTags          String[] // vegetarian, vegan, gluten-free, etc.
+  cuisineType       String?
+  difficultyLevel   String   // easy, medium, hard
+  imageUrl          String?
+  nutritionInfo     Json?    // protein, carbs, fat, fiber, etc.
+  cost              Float?   // estimated cost per serving
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  mealPlanItems MealPlanItem[]
+  favorites     UserFavorite[]
+  
+  @@map("recipes")
+}
+
+model MealPlan {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  totalCost   Float?
+  totalCalories Int?
+  status      String   @default("active") // active, completed, archived
+  aiPrompt    String?  // the original prompt used to generate this plan
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items         MealPlanItem[]
+  shoppingLists ShoppingList[]
+  
+  @@map("meal_plans")
+}
+
+model MealPlanItem {
+  id         String   @id @default(cuid())
+  mealPlanId String
+  recipeId   String
+  mealDate   DateTime
+  mealType   String   // breakfast, lunch, dinner, snack
+  servings   Int      @default(1)
+  notes      String?
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  recipe   Recipe   @relation(fields: [recipeId], references: [id])
+  
+  @@map("meal_plan_items")
+}
+
+model ShoppingList {
+  id            String   @id @default(cuid())
+  mealPlanId    String
+  items         Json     // {item: {amount, category, estimated_cost, purchased}, ...}
+  estimatedCost Float?
+  actualCost    Float?
+  status        String   @default("pending") // pending, shopping, completed
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  
+  @@map("shopping_lists")
+}
+
+model UserFavorite {
+  id       String @id @default(cuid())
+  userId   String
+  recipeId String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, recipeId])
+  @@map("user_favorites")
+}
+
+model EmailSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  type      String   // newsletter, meal_reminders, shopping_alerts
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("email_subscriptions")
+}
