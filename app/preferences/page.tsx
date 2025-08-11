@@ -3,16 +3,21 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { ChefHat } from "lucide-react"
+import { Settings, Save, Loader2, CheckCircle } from "lucide-react"
+import UserPreferencesForm from "@/components/UserPreferencesForm"
 import ProtectedRoute from "@/components/protected-route"
 import DashboardHeader from "@/components/DashboardHeader"
+
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 interface UserPreferences {
   id?: string

@@ -5,6 +5,10 @@ import "./globals.css"
 import AuthSessionProvider from "@/components/session-provider"
 import AppTour from "@/components/app-tour"
 
+// Force dynamic rendering for the entire app
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const josefin = Josefin_Sans({ 
   subsets: ["latin"],
   variable: "--font-josefin",

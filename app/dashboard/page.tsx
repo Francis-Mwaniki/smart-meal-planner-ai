@@ -22,6 +22,10 @@ import Link from "next/link"
 import ProtectedRoute from "@/components/protected-route"
 import DashboardHeader from "@/components/DashboardHeader"
 
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface MealPlan {
   id: string
   name: string

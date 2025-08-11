@@ -8,8 +8,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Sparkles, Wand2, Clock, Users, DollarSign, ChefHat, ArrowRight, Loader2 } from "lucide-react"
+import { ChefHat, Calendar, ShoppingCart, Users, Brain, Loader2, Sparkles } from "lucide-react"
 import Link from "next/link"
+
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default function DemoPage() {
   const [isGenerating, setIsGenerating] = useState(false)

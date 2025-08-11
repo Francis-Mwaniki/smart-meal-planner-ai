@@ -16,13 +16,26 @@ type TourStep = {
 
 const STORAGE_KEY = "smartmeal.tour.v1.completed"
 
-export default function AppTour() {
+// Force client-side only rendering
+const AppTourClient = () => {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [isActive, setIsActive] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null)
   const [container, setContainer] = useState<HTMLElement | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  // Ensure component only runs on client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render anything until mounted
+  if (!mounted) {
+    return null
+  }
+
   const steps = useMemo<TourStep[]>(() => {
     if (pathname?.startsWith("/dashboard")) {
       return [
@@ -208,6 +221,11 @@ function computePopoverPosition(rect: DOMRect | null, placement: TourStep["place
     default:
       return { top: top + rect.height + margin, left: left }
   }
+}
+
+// Export the client component with proper isolation
+export default function AppTour() {
+  return <AppTourClient />
 }
 
 

@@ -14,6 +14,10 @@ import Link from "next/link"
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function SignInPage() {
   const router = useRouter()
   const searchParams = useSearchParams()

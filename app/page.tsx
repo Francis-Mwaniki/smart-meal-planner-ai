@@ -4,6 +4,10 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Brain, Calendar, ShoppingCart, Users, ChefHat, Sparkles, Rocket, Target } from "lucide-react"
 import Link from "next/link"
 
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">

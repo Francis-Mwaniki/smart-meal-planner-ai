@@ -15,6 +15,10 @@ import ShoppingListList from "@/components/ShoppingListList"
 import DashboardHeader from "@/components/DashboardHeader"
 import { ShoppingList } from "@/types"
 
+// Force dynamic rendering to prevent static generation errors
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface PaginationInfo {
   page: number
   limit: number
@@ -120,6 +124,7 @@ export default function ShoppingListsPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ optimize: true }),
+
       })
 
       if (response.ok) {
