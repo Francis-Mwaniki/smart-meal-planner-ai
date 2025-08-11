@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
@@ -90,15 +91,9 @@ export async function POST(
       return NextResponse.json({ error: "Items array is required" }, { status: 400 })
     }
 
-    // Create or update shopping list
-    const shoppingList = await prisma.shoppingList.upsert({
-      where: { mealPlanId: params.id },
-      update: {
-        items,
-        estimatedCost: estimatedCost ? parseFloat(estimatedCost) : undefined,
-        status
-      },
-      create: {
+    // Create shopping list
+    const shoppingList = await prisma.shoppingList.create({
+      data: {
         mealPlanId: params.id,
         items,
         estimatedCost: estimatedCost ? parseFloat(estimatedCost) : undefined,
@@ -167,8 +162,8 @@ export async function PUT(
         if (openRouter) {
           // Call AI optimization
           const optimizedData = await openRouter.generateShoppingListOptimization({
-            items: shoppingList.items,
-            budget: shoppingList.estimatedCost
+            mealPlanId: shoppingList.mealPlanId,
+            items: shoppingList.items as { name: string; amount: string; category: string; estimatedCost: number; purchased: boolean; }[] || []
           })
 
           // Update with optimized data
